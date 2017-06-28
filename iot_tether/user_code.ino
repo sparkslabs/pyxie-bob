@@ -31,7 +31,7 @@ public:
   ~TetherHost() { }
 
   const char *hostid() { 
-    return "microbug";
+    return "microbit";
   }
 
   const char * attrs() {
