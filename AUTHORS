@@ -1,8 +1,16 @@
 
+Regarding the microbit-prototype stage:
+---------------------------------------
 The primary copyright holder is the British Broadcasting Corporaton.
 
 BBC Contributors:
 
-* Michael Sparks - <michael.sparks@bbc.co.uk>, <sparks.m@gmail.com>, @sparks_rd, http://github.com/sparkslabs
 * Matthew Brooks - <matthew.brooks@bbc.co.uk>, @brooksoid, https://github.com/matthewrbrooks
 * Paul Golds - <paul.golds@bbc.co.uk>, https://github.com/Molt
+
+Regarding pyxie-bob stage:
+-------------------------
+
+After the rename to pyxie-bob in this fork, ongoing development is here:
+
+* Michael Sparks - <sparks.m@gmail.com>, @sparks_rd, http://github.com/sparkslabs

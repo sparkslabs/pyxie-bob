@@ -19,7 +19,7 @@
 #
 
 import sys
-from py2cc.main import main_single
+from pycc.main import main_single
 
 def single_usage(prog):
 
