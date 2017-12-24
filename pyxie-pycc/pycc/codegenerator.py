@@ -36,7 +36,8 @@ void print(const char *value) {
 
 
 program_template = """\
-#include "dal.h"
+#include <PyxieBobDAL.h>
+
 #include <math.h>
 
 void sleep(int time) { pause(time); }         // POWER

@@ -161,8 +161,6 @@ def main_single(source_file, dest_file, tmp_directory, cleanup=False):
     x = parse(source, lexer)
     y  = gen_code(x)
 
-
-
     basedir = os.path.join(tmp_directory, basefile)
     os.mkdir(basedir)
 
@@ -171,18 +169,20 @@ def main_single(source_file, dest_file, tmp_directory, cleanup=False):
     f.flush()
     f.close()
 
-    os.system("rsync >/dev/null -az ../dal/ "+ basedir+"/")
-    os.system("rm -rf " + basedir+"/001/")
-    os.system("rm -rf " + basedir+"/002/")
-    os.system("rm -rf " + basedir+"/003/")
-    os.system("rm -rf " + basedir+"/*.hex")
-    os.system("rm -rf " + basedir+"/build-leonardo/*.hex")
-    os.system("rm " + basedir+"/MicroFont.odt")
-    os.system("rm " + basedir+"/spark_font.json")
-    os.system("rm " + basedir+"/user_code.ino")
-
     f = open(basedir+"/user_code.ino", "w")
     f.write(y)
+    f.close()
+
+    f = open(basedir+"/Makefile", "w")
+    makefile = """\
+BOARD_TAG    = leonardo
+ARDUINO_PORT = /dev/ttyACM0
+CPPFLAGS = -std=c++11
+ARDUINO_LIBS = PyxieBob
+
+include /usr/share/arduino/Arduino.mk
+"""
+    f.write(makefile)
     f.close()
 
 #   These are the only files that are technically needed:

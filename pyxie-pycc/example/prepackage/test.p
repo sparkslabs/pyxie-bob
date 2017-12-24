@@ -1,0 +1,2 @@
+happy_kitten = make_image(0xe,0x11,0x4,0xa,0xa)
+show_image_offset(happy_kitten,0,0)
