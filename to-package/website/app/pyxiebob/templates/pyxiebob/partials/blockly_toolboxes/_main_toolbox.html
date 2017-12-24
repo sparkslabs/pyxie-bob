@@ -1,0 +1,180 @@
+<!-- Start of _blockly_toolbar.html, owned my MRB -->
+<xml id="toolbox" style="display: none">
+    <category name="Basic">
+        <block type="text"></block>
+        <block type="math_number"></block>
+        <block type="math_number">
+             <field name="NUM">1</field>
+        </block>
+        <block type="pyxiebob_show_letter">
+            <value name="letter">
+                <block type="text">
+                    <field name="TEXT"></field>
+                </block>
+            </value>
+        </block>
+        <block type="pyxiebob_pause">
+            <value name="pause">
+                <block type="math_number">
+                    <field name="NUM">100</field>
+                </block>
+            </value>
+        </block>
+        <block type="pyxiebob_print_message">
+            <value name="message">
+                <block type="text">
+                    <field name="TEXT">Pyxie Bob</field>
+                </block>
+            </value>
+            <value name="pausetime">
+                <block type="math_number">
+                    <field name="NUM">100</field>
+                </block>
+            </value>
+        </block>
+    </category>
+    <category name="LED">
+        <block type="pyxiebob_clear_display"></block>
+
+        <block type="pyxiebob_plot">
+            <value name="x">
+                <block type="math_number">
+                    <field name="NUM">0</field>
+                </block>
+            </value>
+            <value name="y">
+                <block type="math_number">
+                    <field name="NUM">0</field>
+                </block>
+            </value>
+        </block>
+        <block type="pyxiebob_unplot">
+            <value name="x">
+                <block type="math_number">
+                    <field name="NUM">0</field>
+                </block>
+            </value>
+            <value name="y">
+                <block type="math_number">
+                    <field name="NUM">0</field>
+                </block>
+            </value>
+        </block>
+        <block type="pyxiebob_point">
+            <value name="x">
+                <block type="math_number">
+                    <field name="NUM">0</field>
+                </block>
+            </value>
+            <value name="y">
+                <block type="math_number">
+                    <field name="NUM">0</field>
+                </block>
+            </value>
+        </block>
+        <block type="pyxiebob_eye_on"></block>
+        <block type="pyxiebob_eye_off"></block>
+        <block type="pyxiebob_set_eye"></block>
+        <block type="pyxiebob_toggle_eye"></block>
+        <block type="pyxiebob_get_eye"></block>
+    </category>
+    <category name="Images">
+        <block type="pyxiebob_make_StringImage">
+            <value name="NAME">
+                <block type="text">
+                    <field name="TEXT">Pyxie Bob</field>
+                </block>
+            </value>
+        </block>
+        <block type="pyxiebob_scroll_string_image">
+            <value name="speed">
+                <block type="math_number">
+                    <field name="NUM">100</field>
+                </block>
+            </value>
+        </block>
+        <!-- <block type="pyxiebob_show_image"></block> -->
+        <block type="pyxiebob_show_image_offset">
+            <value name="x">
+                <block type="math_number">
+                    <field name="NUM">0</field>
+                </block>
+            </value>
+            <value name="y">
+                <block type="math_number">
+                    <field name="NUM">0</field>
+                </block>
+            </value>
+        </block>
+        <!-- <block type="pyxiebob_scroll_image"></block> -->
+        <block type="pyxiebob_build_image"></block>
+        <block type="pyxiebob_build_big_image"></block>
+        <!-- <block type="pyxiebob_set_image_point"></block>
+                <block type="pyxiebob_get_image_point"></block> -->
+    </category>
+    <category name="Input">
+        <block type="pyxiebob_get_button"></block>
+        <block type="pyxiebob_logic_button_states"></block>
+    </category>
+    <category name="If">
+        <block type="controls_if"></block>
+        <block type="controls_if">
+          <mutation else="1"></mutation>
+        </block>
+        <block type="controls_if">
+          <mutation elseif="1" else="1"></mutation>
+        </block>
+    </category>
+    <category name="Loops">
+        <block type="controls_repeat_ext">
+            <value name="TIMES">
+                <block type="math_number">
+                    <field name="NUM">3</field>
+                </block>
+            </value>
+        </block>
+        <block type="controls_whileUntil"></block>
+        <block type="controls_for">
+            <value name="FROM">
+                <block type="math_number">
+                    <field name="NUM">1</field>
+                </block>
+            </value>
+            <value name="TO">
+                <block type="math_number">
+                    <field name="NUM">10</field>
+                </block>
+            </value>
+            <value name="BY">
+                <block type="math_number">
+                    <field name="NUM">1</field>
+                </block>
+            </value>
+        </block>
+        <block type="pyxiebob_forever"></block>
+    </category>
+    <category name="Logic">
+        <block type="logic_compare"></block>
+        <block type="logic_operation"></block>
+        <block type="logic_negate"></block>
+        <block type="logic_boolean"></block>
+        <block type="pyxiebob_logic_onoff_states"></block>
+    </category>
+    <category name="Maths">
+        <block type="math_arithmetic"></block>
+    </category>
+    <category name="Variables">
+        <block type="variables_set"></block>
+        <block type="variables_get"></block>
+    </category>
+<!--       <category name="Comment">
+        <block type="pyxiebob_comment">
+            <value name="comment">
+                <block type="text">
+                    <field name="TEXT"></field>
+                </block>
+            </value>
+        </block>
+    </category>   --> 
+</xml>
+<!-- End of _blockly_toolbar.html -->

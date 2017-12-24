@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+/*
+# Copyright 2016 British Broadcasting Corporation and Contributors(1)
+#
+# (1) Contributors are listed in the AUTHORS file (please extend AUTHORS,
+#     not this header)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+*/
+-->
+
+	<script src="jquery.min.js" type="text/javascript"></script>
+	<script src="jquery-ui.min.js" type="text/javascript"></script>
+
+	<script type="text/javascript" src="blockly/blockly_compressed.js"></script>
+	<script type="text/javascript" src="blockly/blocks_compressed.js"></script>
+	<script type="text/javascript" src="blockly/python_compressed.js"></script>
+	<script type="text/javascript" src="blockly/javascript_compressed.js"></script>
+	<script type="text/javascript" src="blockly/msg/js/en.js"></script>
+
+	<script type="text/javascript" src="js/dal_browser.js"></script>
+
+	<script type="text/javascript" src="js/acorn_interpreter.js"></script>
+	<!--
+	<script type="text/javascript" src="js/acorn.js"></script>
+	<script type="text/javascript" src="js/interpreter.js"></script>
+	-->
+
+	<script type="text/javascript" src="blockly/blocks/pyxiebob.js"></script>
+	<script type="text/javascript" src="blockly/generators/javascript/pyxiebob.js"></script>
+	<script type="text/javascript" src="blockly/generators/python/pyxiebob.js"></script>
+
+	<script type="text/javascript" src="js/simio.js"></script>
+</head>
+
+<body>
+	<h1> PyxieBob</h1>
+	<P> [ <a href="/blockly_create.html">Create</a> | <a href="/blockly_listprograms.html">all programs</a> | <a href="/cgi-bin/dump_uploads.py">debug dump</a>]
+	<hr>
+	<P>
+	<button type="button" id="BuildCodeButton">Build Code</button>
+	<button type="button" id="RunCodeButton">Run Simulator</button>
+    <input type="text" id="pausetime" value="100">
+
+	<div id="codeblock" style="width: 90%; border: dotted;margin:1em; padding: 1em;">
+		<PRE>
+		# Codeblock
+		</PRE>
+	</div>
+	<!-- div id="resultblock" style="width: 90%; border: dotted;margin:1em; padding: 1em;">
+		<P>Server result goes here
+	</div -->
+	<div id="SIMIO" style="width:200px;"></div>
+
+	<div id="blocklyDiv" style="width: 80%; margin:1em; height: 480px;"></div>
+
+		<xml id="toolbox" style="display: none">
+			<category name="PyxieBob">
+				<category name="Eyes">
+					<block type="pyxiebob_seteye"></block>
+					<block type="pyxiebob_eyeon"></block>
+					<block type="pyxiebob_eyeoff"></block>
+					<block type="pyxiebob_toggleeye"></block>
+				</category>
+				<category name="Display">
+					<block type="pyxiebob_scrollstring"></block>
+					<block type="pyxiebob_printmessage"></block>
+					<block type="pyxiebob_showletter"></block>
+					<block type="pyxiebob_cleardisplay"></block>
+					<block type="pyxiebob_plot"></block>
+					<block type="pyxiebob_unplot"></block>
+					<block type="pyxiebob_point"></block>
+					<block type="pyxiebob_buildsprite"></block>
+					<block type="pyxiebob_buildbigsprite"></block>
+					<block type="pyxiebob_setdisplay"></block>
+					<block type="pyxiebob_showviewport"></block>
+					<block type="pyxiebob_scrollimage"></block>
+					<block type="pyxiebob_imagepoint"></block>
+					<block type="pyxiebob_setimagepoint"></block>
+				</category>
+				<category name="Buttons">
+					<block type="pyxiebob_getbutton"></block>
+				</category>
+			</category>
+
+			<category name="Variables">
+				<block type="variables_get"></block>
+				<block type="variables_set"></block>
+			</category>
+			<category name="Control Structures">
+					<block type="controls_if"></block>
+					<block type="controls_if_if"></block>
+					<block type="controls_if_elseif"></block>
+					<block type="controls_if_else"></block>
+			</category>
+			<category name="operations">
+					<block type="logic_compare"></block>
+					<block type="logic_operation"></block>
+					<block type="logic_negate"></block>
+					<block type="logic_boolean"></block>
+					<block type="math_arithmetic"></block>
+			</category>
+
+			<category name="Loops">
+				<block type="controls_whileUntil"></block>
+				<block type="controls_for"></block>
+				<block type="controls_repeat_ext"></block>
+			</category>
+
+			<category name="Values">
+					<block type="math_number"></block>
+					<block type="text"></block>
+			</category>
+		</xml>
+		
+		<xml id="startBlocks" style="display: none">
+
+<!-- test buttons --> <!--
+		<block type="controls_whileUntil" id="6" inline="false" x="99" y="-5"><field name="MODE">WHILE</field><value name="BOOL"><block type="logic_boolean" id="75"><field name="BOOL">TRUE</field></block></value><statement name="DO"><block type="variables_set" id="79" inline="true"><field name="VAR">buttonA</field><value name="VALUE"><block type="pyxiebob_getbutton" id="81" inline="true"><value name="id"><block type="text" id="84"><field name="TEXT">A</field></block></value></block></value><next><block type="variables_set" id="85" inline="true"><field name="VAR">buttonB</field><value name="VALUE"><block type="pyxiebob_getbutton" id="86" inline="true"><value name="id"><block type="text" id="87"><field name="TEXT">B</field></block></value></block></value><next><block type="pyxiebob_seteye" id="159" inline="false"><value name="id"><block type="text" id="161"><field name="TEXT">L</field></block></value><value name="state"><block type="variables_get" id="179"><field name="VAR">buttonA</field></block></value><next><block type="pyxiebob_seteye" id="160" inline="false"><value name="id"><block type="text" id="162"><field name="TEXT">R</field></block></value><value name="state"><block type="variables_get" id="180"><field name="VAR">buttonB</field></block></value></block></next></block></next></block></next></block></statement></block></xml> -->
+
+<!--
+		<block type="pyxiebob_setdisplay" id="15" inline="true" x="56" y="47"><value name="SPRITE"><block type="pyxiebob_buildsprite" id="30"><field name="LED04">TRUE</field><field name="LED14">TRUE</field><field name="LED24">TRUE</field><field name="LED34">TRUE</field><field name="LED44">TRUE</field><field name="LED03">TRUE</field><field name="LED13">TRUE</field><field name="LED23">TRUE</field><field name="LED33">TRUE</field><field name="LED43">TRUE</field><field name="LED02">TRUE</field><field name="LED12">TRUE</field><field name="LED22">TRUE</field><field name="LED32">TRUE</field><field name="LED42">TRUE</field><field name="LED01">TRUE</field><field name="LED11">TRUE</field><field name="LED21">TRUE</field><field name="LED31">TRUE</field><field name="LED41">TRUE</field><field name="LED00">TRUE</field><field name="LED10">TRUE</field><field name="LED20">TRUE</field><field name="LED30">TRUE</field><field name="LED40">TRUE</field></block></value></block></xml>  -->
+<!--
+			<block type="variables_set" id="1" inline="true" x="134" y="52"><field name="VAR">bigsprite</field><value name="VALUE"><block type="pyxiebob_buildbigsprite" id="2"><field name="LED04">FALSE</field><field name="LED14">FALSE</field><field name="LED24">FALSE</field><field name="LED34">FALSE</field><field name="LED44">TRUE</field><field name="LED54">FALSE</field><field name="LED64">FALSE</field><field name="LED74">FALSE</field><field name="LED84">FALSE</field><field name="LED94">TRUE</field><field name="LED03">FALSE</field><field name="LED13">FALSE</field><field name="LED23">FALSE</field><field name="LED33">TRUE</field><field name="LED43">TRUE</field><field name="LED53">TRUE</field><field name="LED63">FALSE</field><field name="LED73">FALSE</field><field name="LED83">FALSE</field><field name="LED93">TRUE</field><field name="LED02">FALSE</field><field name="LED12">FALSE</field><field name="LED22">TRUE</field><field name="LED32">TRUE</field><field name="LED42">TRUE</field><field name="LED52">FALSE</field><field name="LED62">TRUE</field><field name="LED72">FALSE</field><field name="LED82">FALSE</field><field name="LED92">TRUE</field><field name="LED01">FALSE</field><field name="LED11">TRUE</field><field name="LED21">TRUE</field><field name="LED31">TRUE</field><field name="LED41">TRUE</field><field name="LED51">FALSE</field><field name="LED61">FALSE</field><field name="LED71">TRUE</field><field name="LED81">FALSE</field><field name="LED91">TRUE</field><field name="LED00">TRUE</field><field name="LED10">TRUE</field><field name="LED20">TRUE</field><field name="LED30">TRUE</field><field name="LED40">TRUE</field><field name="LED50">FALSE</field><field name="LED60">FALSE</field><field name="LED70">FALSE</field><field name="LED80">TRUE</field><field name="LED90">TRUE</field></block></value><next><block type="pyxiebob_scrollimage" id="9" inline="false"><value name="sprite"><block type="variables_get" id="10"><field name="VAR">bigsprite</field></block></value><value name="delay"><block type="math_number" id="11"><field name="NUM">50</field></block></value></block></next></block></xml> -->
+
+
+<block type="variables_set" id="1" inline="true" x="0" y="0"><field name="VAR">bigsprite</field><value name="VALUE"><block type="pyxiebob_buildbigsprite" id="2"><field name="LED04">FALSE</field><field name="LED14">FALSE</field><field name="LED24">FALSE</field><field name="LED34">FALSE</field><field name="LED44">TRUE</field><field name="LED54">FALSE</field><field name="LED64">FALSE</field><field name="LED74">FALSE</field><field name="LED84">FALSE</field><field name="LED94">TRUE</field><field name="LED03">FALSE</field><field name="LED13">FALSE</field><field name="LED23">FALSE</field><field name="LED33">TRUE</field><field name="LED43">TRUE</field><field name="LED53">TRUE</field><field name="LED63">FALSE</field><field name="LED73">FALSE</field><field name="LED83">FALSE</field><field name="LED93">TRUE</field><field name="LED02">FALSE</field><field name="LED12">FALSE</field><field name="LED22">TRUE</field><field name="LED32">TRUE</field><field name="LED42">TRUE</field><field name="LED52">FALSE</field><field name="LED62">TRUE</field><field name="LED72">FALSE</field><field name="LED82">FALSE</field><field name="LED92">TRUE</field><field name="LED01">FALSE</field><field name="LED11">TRUE</field><field name="LED21">TRUE</field><field name="LED31">TRUE</field><field name="LED41">TRUE</field><field name="LED51">FALSE</field><field name="LED61">FALSE</field><field name="LED71">TRUE</field><field name="LED81">FALSE</field><field name="LED91">TRUE</field><field name="LED00">TRUE</field><field name="LED10">TRUE</field><field name="LED20">TRUE</field><field name="LED30">TRUE</field><field name="LED40">TRUE</field><field name="LED50">FALSE</field><field name="LED60">FALSE</field><field name="LED70">FALSE</field><field name="LED80">TRUE</field><field name="LED90">TRUE</field></block></value><next><block type="pyxiebob_scrollstring" id="3" inline="false"><value name="Message"><block type="text" id="4"><field name="TEXT">DONKEY</field></block></value><value name="Speed"><block type="math_number" id="5"><field name="NUM">50</field></block></value><next><block type="pyxiebob_printmessage" id="6" inline="false"><value name="message"><block type="text" id="7"><field name="TEXT">MONKEY</field></block></value><value name="pausetime"><block type="math_number" id="8"><field name="NUM">50</field></block></value><next><block type="pyxiebob_scrollimage" id="9" inline="false"><value name="sprite"><block type="variables_get" id="10"><field name="VAR">bigsprite</field></block></value><value name="delay"><block type="math_number" id="11"><field name="NUM">50</field></block></value><next><block type="pyxiebob_showletter" id="12" inline="true"><value name="letter"><block type="text" id="13"><field name="TEXT">X</field></block></value><next><block type="pyxiebob_showletter" id="14" inline="true"><value name="letter"><block type="text" id="15"><field name="TEXT">Y</field></block></value><next><block type="pyxiebob_setdisplay" id="16" inline="true"><value name="SPRITE"><block type="pyxiebob_buildsprite" id="17"><field name="LED04">TRUE</field><field name="LED14">TRUE</field><field name="LED24">FALSE</field><field name="LED34">TRUE</field><field name="LED44">TRUE</field><field name="LED03">FALSE</field><field name="LED13">TRUE</field><field name="LED23">FALSE</field><field name="LED33">FALSE</field><field name="LED43">TRUE</field><field name="LED02">FALSE</field><field name="LED12">FALSE</field><field name="LED22">FALSE</field><field name="LED32">FALSE</field><field name="LED42">FALSE</field><field name="LED01">TRUE</field><field name="LED11">FALSE</field><field name="LED21">FALSE</field><field name="LED31">FALSE</field><field name="LED41">TRUE</field><field name="LED00">FALSE</field><field name="LED10">TRUE</field><field name="LED20">TRUE</field><field name="LED30">TRUE</field><field name="LED40">FALSE</field></block></value><next><block type="pyxiebob_cleardisplay" id="18"><next><block type="pyxiebob_toggleeye" id="19" inline="true"><value name="id"><block type="text" id="20"><field name="TEXT">L</field></block></value><next><block type="pyxiebob_toggleeye" id="21" inline="true"><value name="id"><block type="text" id="22"><field name="TEXT">R</field></block></value><next><block type="controls_for" id="23" inline="true"><field name="VAR">x</field><value name="FROM"><block type="math_number" id="24"><field name="NUM">0</field></block></value><value name="TO"><block type="math_number" id="25"><field name="NUM">5</field></block></value><value name="BY"><block type="math_number" id="26"><field name="NUM">1</field></block></value><statement name="DO"><block type="pyxiebob_showviewport" id="27" inline="false"><value name="sprite"><block type="variables_get" id="28"><field name="VAR">bigsprite</field></block></value><value name="x"><block type="variables_get" id="29"><field name="VAR">x</field></block></value><value name="y"><block type="math_number" id="30"><field name="NUM">0</field></block></value></block></statement><next><block type="pyxiebob_cleardisplay" id="31"><next><block type="controls_for" id="32" inline="true"><field name="VAR">x</field><value name="FROM"><block type="math_number" id="33"><field name="NUM">0</field></block></value><value name="TO"><block type="math_number" id="34"><field name="NUM">4</field></block></value><value name="BY"><block type="math_number" id="35"><field name="NUM">2</field></block></value><statement name="DO"><block type="controls_for" id="36" inline="true"><field name="VAR">y</field><value name="FROM"><block type="math_number" id="37"><field name="NUM">0</field></block></value><value name="TO"><block type="math_number" id="38"><field name="NUM">4</field></block></value><value name="BY"><block type="math_number" id="39"><field name="NUM">2</field></block></value><statement name="DO"><block type="pyxiebob_plot" id="40" inline="true"><value name="x"><block type="variables_get" id="41"><field name="VAR">x</field></block></value><value name="y"><block type="variables_get" id="42"><field name="VAR">y</field></block></value><next><block type="pyxiebob_toggleeye" id="43" inline="true"><value name="id"><block type="text" id="44"><field name="TEXT">L</field></block></value></block></next></block></statement></block></statement><next><block type="controls_for" id="45" inline="true"><field name="VAR">x</field><value name="FROM"><block type="math_number" id="46"><field name="NUM">0</field></block></value><value name="TO"><block type="math_number" id="47"><field name="NUM">4</field></block></value><value name="BY"><block type="math_number" id="48"><field name="NUM">2</field></block></value><statement name="DO"><block type="controls_for" id="49" inline="true"><field name="VAR">y</field><value name="FROM"><block type="math_number" id="50"><field name="NUM">0</field></block></value><value name="TO"><block type="math_number" id="51"><field name="NUM">4</field></block></value><value name="BY"><block type="math_number" id="52"><field name="NUM">2</field></block></value><statement name="DO"><block type="pyxiebob_unplot" id="53" inline="true"><value name="x"><block type="variables_get" id="54"><field name="VAR">x</field></block></value><value name="y"><block type="variables_get" id="55"><field name="VAR">y</field></block></value><next><block type="pyxiebob_toggleeye" id="56" inline="true"><value name="id"><block type="text" id="57"><field name="TEXT">R</field></block></value></block></next></block></statement></block></statement><next><block type="variables_set" id="58" inline="true"><field name="VAR">blanksprite</field><value name="VALUE"><block type="pyxiebob_buildsprite" id="59"><field name="LED04">FALSE</field><field name="LED14">FALSE</field><field name="LED24">FALSE</field><field name="LED34">FALSE</field><field name="LED44">FALSE</field><field name="LED03">FALSE</field><field name="LED13">FALSE</field><field name="LED23">FALSE</field><field name="LED33">FALSE</field><field name="LED43">FALSE</field><field name="LED02">FALSE</field><field name="LED12">FALSE</field><field name="LED22">FALSE</field><field name="LED32">FALSE</field><field name="LED42">FALSE</field><field name="LED01">FALSE</field><field name="LED11">FALSE</field><field name="LED21">FALSE</field><field name="LED31">FALSE</field><field name="LED41">FALSE</field><field name="LED00">FALSE</field><field name="LED10">FALSE</field><field name="LED20">FALSE</field><field name="LED30">FALSE</field><field name="LED40">FALSE</field></block></value><next><block type="controls_for" id="60" inline="true"><field name="VAR">i</field><value name="FROM"><block type="math_number" id="61"><field name="NUM">0</field></block></value><value name="TO"><block type="math_number" id="62"><field name="NUM">4</field></block></value><value name="BY"><block type="math_number" id="63"><field name="NUM">1</field></block></value><statement name="DO"><block type="pyxiebob_setimagepoint" id="64" inline="false"><value name="id"><block type="variables_get" id="65"><field name="VAR">blanksprite</field></block></value><value name="x"><block type="variables_get" id="66"><field name="VAR">i</field></block></value><value name="y"><block type="variables_get" id="67"><field name="VAR">i</field></block></value><value name="value"><block type="math_number" id="68"><field name="NUM">1</field></block></value></block></statement><next><block type="variables_set" id="69" inline="true"><field name="VAR">ispointset</field><value name="VALUE"><block type="pyxiebob_imagepoint" id="70" inline="false"><value name="id"><block type="variables_get" id="71"><field name="VAR">blanksprite</field></block></value><value name="x"><block type="math_number" id="72"><field name="NUM">0</field></block></value><value name="y"><block type="math_number" id="73"><field name="NUM">0</field></block></value></block></value><next><block type="controls_if" id="74" inline="false"><value name="IF0"><block type="logic_compare" id="75" inline="true"><field name="OP">EQ</field><value name="A"><block type="variables_get" id="76"><field name="VAR">ispointset</field></block></value><value name="B"><block type="math_number" id="77"><field name="NUM">1</field></block></value></block></value><statement name="DO0"><block type="pyxiebob_scrollstring" id="78" inline="false"><value name="Message"><block type="text" id="79"><field name="TEXT">SUCCESS</field></block></value><value name="Speed"><block type="math_number" id="80"><field name="NUM">50</field></block></value></block></statement><next><block type="pyxiebob_setdisplay" id="81" inline="true"><value name="SPRITE"><block type="variables_get" id="82"><field name="VAR">blanksprite</field></block></value><next><block type="pyxiebob_scrollstring" id="83" inline="false"><value name="Message"><block type="text" id="84"><field name="TEXT">FINISHED</field></block></value><value name="Speed"><block type="math_number" id="85"><field name="NUM">50</field></block></value></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></xml> 
+
+
+
+
+	</div>
+	<hr>
+	Contact: michael.sparks@bbc.co.uk
+
+	<script type="text/javascript">
+		Blockly.inject(document.getElementById('blocklyDiv'),
+		{
+			path: './',
+			toolbox: document.getElementById('toolbox'),
+			trashcan: false
+		});
+
+		$(document).ready(function() {
+			// Sim Renderer
+			SIMIO.init("SIMIO");
+			//DALJS.setDirtyCallback(SIMIO.render); DEPRECATED?
+
+			$.get('js/dal_interpreter.js', function(data) {
+				dalcode = data;
+			});
+
+			//Add start blocks if defined - idea: dump them out to console?
+			Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, document.getElementById('startBlocks'));
+
+		    var myInterpreter = null;
+		    var myInterval = null;
+
+			function initInterpreterApi(interpreter, scope)
+			{
+			    function makeWrapper(fn)
+			    {
+			    	return function()
+			    	{
+						for (var j = 0; j < arguments.length; j++) {
+							arguments[j] = arguments[j].toString();
+						}
+			    		return interpreter.createPrimitive(fn.apply(this, arguments));
+			    	}
+			    }
+			    function makeInterp(text, fn)
+			    {
+				    interpreter.setProperty(scope, text, 
+				    	interpreter.createNativeFunction(
+				    		makeWrapper(fn)));
+			    }
+
+			    function makeWrapperScrollImg(fn)
+			    {
+			    	return function()
+			    	{
+						arguments[2] = arguments[0].length;
+						arguments[3] = arguments[0].properties[0].length;
+						arguments.length = 4;
+
+						for (var j = 0; j < arguments.length; j++) {
+							arguments[j] = arguments[j].toString();
+						}
+			    		return interpreter.createPrimitive(fn.apply(this, arguments));
+			    	}
+			    }
+			    function makeInterpScrollImg(text, fn)
+			    {
+				    interpreter.setProperty(scope, text, 
+				    	interpreter.createNativeFunction(
+				    		makeWrapperScrollImg(fn)));
+			    }
+
+				function renderSimulator(display, left_eye_state, right_eye_state)
+				{
+					var leds = display.split(",");
+					leds = leds.map(function(led){return parseInt(led);});
+					var rows = [];
+					rows[0] = leds.slice(0,5);
+					rows[1] = leds.slice(5,10);
+					rows[2] = leds.slice(10,15);
+					rows[3] = leds.slice(15,20);
+					rows[4] = leds.slice(20,25);
+
+					left_eye_state = parseInt(left_eye_state);
+					right_eye_state = parseInt(right_eye_state);
+					SIMIO.render(rows, [left_eye_state, right_eye_state]);
+				}
+
+				DALJS.setDirtyCallback(SIMIO.render);
+
+				function clog(msg)
+				{
+					console.log(msg);
+				}
+				//makeInterp('prompt', prompt);
+				//makeInterp('alert', alert);
+
+				// Utility functions
+			    makeInterp('highlightBlock', highlightBlock);
+			    makeInterp('renderSimulator', renderSimulator);
+			    makeInterp('clog', clog);//console.log
+
+			    // Acorn interpreter can't access DOM's setTimeout, setInterval etc
+				// Callout functions that are in the API				
+				makeInterp('print_message', DALJS.print_message);
+				makeInterp('scroll_string', DALJS.scroll_string);
+				makeInterpScrollImg('scroll_image', DALJS.scroll_image);
+				
+				// Callout functions that are internal to the DAL
+				makeInterp('scroll_string_image', DALJS.scroll_string_image);
+
+			    function makeWrapperButt(fn)
+			    {
+			    	return function()
+			    	{
+						for (var j = 0; j < arguments.length; j++) {
+							arguments[j] = arguments[j].toString();
+						}
+			    		return interpreter.createPrimitive(fn.apply(this, arguments));
+			    	}
+			    }
+			    function makeInterpButt(text, fn)
+			    {
+				    interpreter.setProperty(scope, text, 
+				    	interpreter.createNativeFunction(
+				    		makeWrapper(fn)));
+			    }
+
+				makeInterpButt('get_button', DALJS.get_button);
+			}	    
+
+			var highlightPause = false;
+
+			function highlightBlock(id)
+			{
+			    Blockly.mainWorkspace.highlightBlock(id);
+			    highlightPause = true;
+			}
+
+			function runCode()
+			{
+				//DALJS.reset();
+			    parseCode();
+			    stepCode();
+			}
+
+			function parseCode()
+			{
+				console.log("parseCode");
+			    // Generate JavaScript code and parse it.
+			    Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
+			    Blockly.JavaScript.addReservedWords('highlightBlock');
+			    
+			    var code = Blockly.JavaScript.workspaceToCode();
+
+			    alert('Ready to execute this code:\n\n' + code);
+			    code = dalcode + "reset();" + code;
+
+			    myInterpreter = new Interpreter(code, initInterpreterApi);
+			    highlightPause = false;
+			    Blockly.mainWorkspace.traceOn(true);
+			    Blockly.mainWorkspace.highlightBlock(null);
+			}
+
+			function stepCode()
+			{
+			    if (!DALJS.deviceReady())
+			    {
+			        setTimeout(function()
+			        {
+			            stepCode();
+			        }, 50);
+			        return;
+			    }
+
+			    try
+			    {
+			        var ok = myInterpreter.step();
+			    }
+			    finally
+			    {
+			        if (!ok)
+			        {
+			            // Program complete, no more code to execute.
+			            return;
+			        }
+			    }
+
+			    if (highlightPause)
+			    {
+			        // A block has been highlighted.  Pause execution here.
+			        var pausebutton = document.getElementById('pausetime');
+			        var delay = parseInt(document.getElementById('pausetime').value);
+
+			        highlightPause = false;
+			        setTimeout(function()
+			        {
+			            stepCode();
+			        }, delay);
+			    }
+			    else
+			    {
+			        // Keep executing until a highlight statement is reached.
+			        stepCode();
+			    }
+			}
+
+			// Code Build
+			var buildCode = function() {
+				var pycode = "you've commented the pycode out";//Blockly.Python.workspaceToCode();
+
+				var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+				var xml_text = Blockly.Xml.domToText(xml);
+				console.log(xml_text);
+
+				$("#codeblock").html("<P><PRE>" + pycode  + "</PRE>" + "<P><PRE>" + pycode + "</PRE>");
+    			$.ajax({
+					type: "POST",
+					url: "/cgi-bin/upload_mb.py",
+					data: JSON.stringify({"repr" : { "code": pycode, "xml" : xml_text }}),
+					success: function( data ) {
+						var someid = data["id"];
+						text = '<P>Link to this version - <a href="/blockly_reload.html?id=' +  someid + '"> ' + someid.toString() +' </a>';
+						$( "#resultblock" ).html( text );
+						},
+				});
+			};
+
+			document.getElementById("BuildCodeButton").addEventListener("click", buildCode);
+			document.getElementById("RunCodeButton").addEventListener("click", runCode);
+			SIMIO.render();
+		});
+	</script>
+</body>
+</html>

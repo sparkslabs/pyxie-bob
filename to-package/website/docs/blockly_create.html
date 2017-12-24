@@ -1,0 +1,310 @@
+<html>
+<head>
+<!--
+/*
+# Copyright 2016 British Broadcasting Corporation and Contributors(1)
+#
+# (1) Contributors are listed in the AUTHORS file (please extend AUTHORS,
+#     not this header)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+*/
+-->
+<style>
+</style>
+<script src="jquery.min.js" type="text/javascript"></script>
+<script src="jquery-ui.min.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="js/acorn_interpreter.js"></script>
+
+<script type="text/javascript" src="blockly/blockly_compressed.js"></script>
+<script type="text/javascript" src="blockly/blocks_compressed.js"></script>
+<script type="text/javascript" src="blockly/python_compressed.js"></script>
+<script type="text/javascript" src="blockly/javascript_compressed.js"></script>
+<script type="text/javascript" src="blockly/msg/js/en.js"></script>
+
+        <script type="text/javascript" src="blockly/blocks/pyxiebob.js"></script>
+        <script type="text/javascript" src="blockly/generators/javascript/pyxiebob.js"></script>
+        <script type="text/javascript" src="blockly/generators/python/pyxiebob.js"></script>
+        <script type="text/javascript" src="js/simio.js"></script>
+        <script type="text/javascript" src="dal_worker_esque.js"></script>
+
+<script>
+function buildCode() {
+    var code = Blockly.Python.workspaceToCode();
+
+    var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+    var xml_text = Blockly.Xml.domToText(xml);
+
+
+    $("#codeblock").html("<P><PRE>" + code  + "</PRE>");
+    $.ajax({
+            type: "POST",
+            url: "/cgi-bin/upload.py",
+            data: JSON.stringify({"repr" : { "code": code, "xml" : xml_text }}),
+            success: function( data ) {
+                                      var someid = data["id"];
+                                        text = '<P>Link to this version - <a href="/blockly_reload.html?id=' +  someid + '"> ' + someid.toString() +' </a>';
+                                        text = text + '<P>Link to hexfile- <a href="/compiled/' +  someid + '.hex"> ' + someid.toString() +' </a>';
+                                        $( "#resultblock" ).html( text );
+                                      },
+           });
+}
+
+</script>
+
+
+
+
+
+</head>
+<body>
+<h1> PyxieBob</h1>
+<P> [ <a href="/blockly_create.html">Create</a> | <a href="/blockly_listprograms.html">all programs</a> | <a href="/cgi-bin/dump_uploads.py">debug dump</a>]
+<hr>
+<P>
+
+
+<button type="button" onclick="flibbleCode()">flibbleCode</button>
+<button type="button" onclick="buildCode()">Build Code</button>
+    <button onclick="runCode()">Run JavaScript</button>
+    <input type="text" id="pausetime" value="1000">
+<!--    <button onclick="parseCode()">Parse JavaScript</button>
+    <button onclick="stepCode()" id="stepButton" disabled="disabled">Step JavaScript</button> -->
+
+<div id="codeblock" style="width: 90%; border: dotted;margin:1em; padding: 1em;">
+<PRE>
+# Codeblock
+</PRE>
+</div>
+
+<div id="resultblock" style="width: 90%; border: dotted;margin:1em; padding: 1em;">
+<P>Server result goes here
+</div>
+
+        <div id="SIMIO" style="width:128px;"></div>
+
+
+<div id="blocklyDiv" style="width: 92%; margin:1em; height: 480px; "></div>
+
+  <xml id="toolbox" style="display: none">
+    <category name="PyxieBob">
+            <category name="Eyes">
+                    <block type="pyxiebob_seteye"></block>
+                    <block type="pyxiebob_eyeon"></block>
+                    <block type="pyxiebob_eyeoff"></block>
+            </category>
+            <category name="Display">
+                    <block type="pyxiebob_scrollstring"></block>
+                    <block type="pyxiebob_printmessage"></block>
+                    <block type="pyxiebob_showletter"></block>
+                    <block type="pyxiebob_cleardisplay"></block>
+                    <block type="pyxiebob_plot"></block>
+                    <block type="pyxiebob_unplot"></block>
+                    <block type="pyxiebob_point"></block>
+            </category>
+            <category name="Buttons">
+                    <block type="pyxiebob_getbutton"></block>
+            </category>
+    </category>
+
+
+    <category name="Control Structures">
+        <block type="controls_if"></block>
+        <block type="controls_if_elseif"></block>
+        <block type="controls_repeat_ext"></block>
+        <block type="controls_whileUntil"></block>
+
+    </category>
+    <category name="operations">
+        <block type="logic_compare"></block>
+        <block type="math_arithmetic"></block>
+    </category>
+
+    <category name="Values">
+        <block type="math_number"></block>
+        <block type="text"></block>
+        <block type="logic_boolean"></block>
+
+    </category>
+
+    <category name="Functions">
+        <block type="text_print"></block>
+    </category>
+    <category name="User functions">
+        <block type="text_print"></block>
+    </category>
+  </xml>
+
+  <xml id="startBlocks" style="display: none">
+
+<block type="pyxiebob_eyeon" id="42" inline="true" x="-1" y="170"><value name="id"><block type="text" id="25"><field name="TEXT">L</field></block></value><next><block type="pyxiebob_eyeon" id="46" inline="true"><value name="id"><block type="text" id="47"><field name="TEXT">R</field></block></value><next><block type="controls_whileUntil" id="15" inline="false"><field name="MODE">WHILE</field><value name="BOOL"><block type="logic_boolean" id="29"><field name="BOOL">TRUE</field></block></value><statement name="DO"><block type="pyxiebob_scrollstring" id="38" inline="false"><value name="Message"><block type="text" id="48"><field name="TEXT">Hello Blockly</field></block></value><value name="Speed"><block type="math_number" id="21"><field name="NUM">100</field></block></value></block></statement></block></next></block></next></block>
+
+  </xml>
+
+  <script type="text/javascript">
+  Blockly.inject(document.getElementById('blocklyDiv'),
+                   { path: './',
+                     toolbox: document.getElementById('toolbox'),
+                     trashcan: false
+                   });
+
+    // Sim Renderer
+    SIMIO.init("SIMIO");
+                       eye_on("L");
+                       eye_on("R");
+                       scroll_string('READY', 100);
+                       setDirtyCallback(SIMIO.render);
+
+    Blockly.Xml.domToWorkspace(Blockly.mainWorkspace,
+        document.getElementById('startBlocks'));
+
+    var myInterpreter = null;
+    var myInterval = null;
+
+    function initApi(interpreter, scope) {
+
+      // Add an API function for the alert() block.
+      var wrapper = function(text) {
+        text = text ? text.toString() : '';
+        return interpreter.createPrimitive(alert(text));
+      };
+      interpreter.setProperty(scope, 'alert',
+          interpreter.createNativeFunction(wrapper));
+
+
+      // Add an API function for the prompt() block.
+      var wrapper = function(text) {
+        text = text ? text.toString() : '';
+        return interpreter.createPrimitive(prompt(text));
+      };
+      interpreter.setProperty(scope, 'prompt',
+          interpreter.createNativeFunction(wrapper));
+
+
+      // Add an API function for the print_message() block.
+      var wrapper = function(text) {
+        text = text ? text.toString() : '';
+        return interpreter.createPrimitive(print_message(text));
+      };
+      interpreter.setProperty(scope, 'print_message',
+          interpreter.createNativeFunction(wrapper));
+
+
+      // Add an API function for the scroll_string() block.
+      var wrapper = function(text) {
+        text = text ? text.toString() : '';
+        return interpreter.createPrimitive(scroll_string(text));
+      };
+      interpreter.setProperty(scope, 'scroll_string',
+          interpreter.createNativeFunction(wrapper));
+
+      // Add an API function for the eye_on() block.
+      var wrapper = function(text) {
+        text = text ? text.toString() : '';
+        return interpreter.createPrimitive(eye_on(text));
+      };
+      interpreter.setProperty(scope, 'eye_on',
+          interpreter.createNativeFunction(wrapper));
+
+
+
+      // Add an API function for highlighting blocks.
+      var wrapper = function(id) {
+        id = id ? id.toString() : '';
+        return interpreter.createPrimitive(highlightBlock(id));
+      };
+      interpreter.setProperty(scope, 'highlightBlock',
+          interpreter.createNativeFunction(wrapper));
+
+
+
+    }
+
+    var highlightPause = false;
+
+    function highlightBlock(id) {
+      Blockly.mainWorkspace.highlightBlock(id);
+      highlightPause = true;
+    }
+
+    function runCode() {
+        parseCode();
+        stepCode();
+    }
+    function parseCode() {
+      // Generate JavaScript code and parse it.
+      Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
+      Blockly.JavaScript.addReservedWords('highlightBlock');
+      var code = Blockly.JavaScript.workspaceToCode();
+
+
+      myInterpreter = new Interpreter(code, initApi);
+
+
+
+
+      alert('Ready to execute this code:\n\n' + code);
+      highlightPause = false;
+      Blockly.mainWorkspace.traceOn(true);
+      Blockly.mainWorkspace.highlightBlock(null);
+    }
+
+    
+    function stepCode() {
+      if (! device_ready()) {
+          setTimeout(function () {
+                stepCode();
+                }, 50);
+          return;
+      }
+      try {
+        var ok = myInterpreter.step();
+      } finally {
+        if (!ok) {
+          // Program complete, no more code to execute.
+          return;
+        }
+      }
+      if (highlightPause) {
+        // A block has been highlighted.  Pause execution here.
+            var pausebutton = document.getElementById('pausetime');
+            var delay = parseInt(document.getElementById('pausetime').value);
+
+            highlightPause = false;
+            setTimeout(function () {
+                stepCode();
+                },delay );
+      } else {
+        // Keep executing until a highlight statement is reached.
+        stepCode();
+      }
+    }
+
+function flibbleCode() {
+Blockly.mainWorkspace.highlightBlock('1');
+for(var count = 0; count < 5;count++) {
+   Blockly.mainWorkspace.highlightBlock('3');
+   print_message('HELLO',200);Blockly.mainWorkspace.highlightBlock('6');
+   alert('WORLD');
+   Blockly.mainWorkspace.highlightBlock('1');
+};
+}
+
+</script>
+
+<hr>
+Contact: michael.sparks@bbc.co.uk
+
+</body>
+</html>

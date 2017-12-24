@@ -1,0 +1,62 @@
+//
+// Copyright 2016 British Broadcasting Corporation and Contributors(1)
+//
+// (1) Contributors are listed in the AUTHORS file (please extend AUTHORS,
+//     not this header)
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+
+// This is the theme for the PyxieBob application
+
+// Global color settings.
+$body-bg: #500;
+
+// Brand-specific colors
+$brand-primary: #f00;
+$content-bg-color: #fff;
+
+// The navigation bar at the top of the screen
+$navbar-height: 30px;
+$navbar-default-bg: #333;
+$navbar-default-color: #ddd;
+$navbar-default-brand-color: #fff;
+$navbar-border-radius: 0px;
+
+$nav-tabs-border-color: #ddd;
+$nav-tabs-inactive-color: #aaa;
+
+.nav-tabs > li > a {
+  background-color: $nav-tabs-inactive-color;
+  border-top-color: $nav-tabs-border-color !important;
+  border-left-color: $nav-tabs-border-color !important;
+  border-right-color: $nav-tabs-border-color !important;
+  border-bottom-color: $nav-tabs-border-color !important;
+}
+
+
+.nav-tabs > li.active > a {
+  border-bottom-color: transparent !important;
+  background-color: $content-bg-color !important;
+}
+
+#emulator {
+    text-align: center;
+}
+ 
+#emulator canvas {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 50px;  
+}

@@ -4,13 +4,14 @@ LICENSE for details of the Apache 2 License)
 
 Additionally:
 
- * the files in the loader directory may be used under the Gnu Public Licence
+ * the files in the to-package/loader directory may be used under the Gnu Public Licence
    Version 2 - GPL V2.  This license can be found here:
       * http://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html
 
- * The files in the device directory may be used under the Creative Commons
+ * The files in the pyxie-bob-hardware directory may be used under the Creative Commons
    Attribution licence - cc-by. This license can be found here:
       * https://creativecommons.org/licenses/by/2.0/uk/
 
 
 Updated: Michael Sparks, May 2016
+Updated: December 2017

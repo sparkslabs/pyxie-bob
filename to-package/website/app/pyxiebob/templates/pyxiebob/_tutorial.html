@@ -1,0 +1,22 @@
+{% extends 'pyxiebob/_master.html' %}
+
+{% block head %}
+    <title>{{ tutorial_name }}</title>
+{% endblock %}
+
+{% block body %}
+    <h1>{{ tutorial_name }}</h1>
+    {% include "pyxiebob/partials/_emulator_editor_tutorial.html" %}
+    <hr/>
+    <div id="tutorial_content">
+        {% block tutorial_pages %}
+        {% endblock %}
+
+        <button id="tutorial_back" class="btn btn-primary always-show">
+            <i class="fa fa-chevron-circle-left"></i>
+        </button>
+        <button id="tutorial_forward" class="btn btn-primary always-show">
+            <i class="fa fa-chevron-circle-right"></i>
+        </button>
+    </div>
+{% endblock %}

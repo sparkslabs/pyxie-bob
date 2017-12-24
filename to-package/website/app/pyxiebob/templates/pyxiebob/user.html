@@ -1,0 +1,220 @@
+{% extends 'pyxiebob/_master.html' %}
+
+{% load realname_for %}
+{% block head %}
+    <!-- Head: user.html -->
+    <title>Pyxie Bob: Viewing user {{ viewed_user.username }}</title>
+    <!-- Head: user.html -->
+{% endblock %}
+
+{% block body %}
+    <!-- Body: user.html -->
+    <h1>{{ viewed_user.username }}</h1>
+
+
+    <div class="panel panel-default">
+        <h2>Programs Written</h2>
+        {% if viewed_user_profile.has_owned_programs %}
+            <p>
+                {% if viewing_own_details %}
+                    You have written the following programs.
+                {% else %}
+                    They have written the following programs.
+                {% endif %}
+            </p>
+            {% for program in viewed_user_profile.programs_owned %}
+                {% include "pyxiebob/partials/_program_card.html" %}
+            {% endfor %}
+            <span class="clearfix"></span>
+        {% else %}
+            <p>
+                {% if viewing_own_details %}
+                    It seems you've not yet written any programs, why
+                    not <a href="{% url 'pyxiebob:create_program'%}">create some</a>?
+                {% else %}
+                    It seems they have not written any programs yet.
+                {% endif %}
+            </p>
+        {% endif %}
+    </div>
+
+    <div class="panel panel-default">
+        <h2>Programs Contributed To</h2>
+        <p>
+            {% if viewing_own_profile %}
+                You have contributed to the following programs.
+            {% else %}
+                They have contributed to the following programs.
+            {% endif %}
+        </p>
+        {% if viewed_user_profile.has_contributed_to_programs %}
+            {% for program in viewed_user_profile.programs_contributed_to %}
+                {% include "pyxiebob/partials/_program_card.html" %}
+            {% endfor %}
+            <span class="clearfix"></span>
+        {% else %}
+            <p>
+                {% if viewing_own_profile %}
+                    It seems you've not yet helped someone else with their programs.
+                {% else %}
+                    It seems they've not yet helped anyone else with their programs.
+                {% endif %}
+            </p>
+        {% endif %}
+    </div>
+
+    {% if viewing_own_details or viewing_facilitated_child_details %}
+        <div class="panel panel-default">
+            <h2>Facilitators</h2>
+            {% if viewed_user_profile.has_facilitators %}
+                <p>
+                    {% if viewing_own_details %}
+                        You have the following facilitators.
+                    {% else %}
+                        They have the following facilitators.
+                    {% endif %}
+                </p>
+                <ul>
+                    {% for facilitator in viewed_user_profile.facilitators.all %}
+                        <li>
+                            {{ facilitator.user.username }}
+                            ({{ facilitator.realname|default:"No name set" }})
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                {% if viewing_own_details %}
+                    <p>You currently have no facilitators.</p>
+                {% else %}
+                    <p>They currently have no facilitators.</p>
+                {% endif %}
+            {% endif %}
+            {% if viewed_user == user %}
+                <button role="button" class="btn btn-primary add-facilitator">
+                    <i class="fa fa-plus-square"></i>&nbsp;Add Facilitator
+                </button>
+            {% endif %}
+        </div>
+
+        <div class="panel panel-default">
+            <h2>Pending Requests</h2>
+            {% if viewed_user_profile.has_pending_requests_as_child %}
+                <p>
+                    {% if viewing_own_details %}
+                        We're waiting for the following facilitators to confirm
+                        your request.
+                    {% else %}
+                        They're waiting for the following facilitators to confirm
+                        their request.
+                    {% endif %}
+                </p>
+                <ul>
+                    {% for request in viewed_user_profile.pending_requests_as_child %}
+                        <li>
+                            {{ request.facilitator.username }}&nbsp;
+                            ({% realname_for request.facilitator.id %})
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                {% if viewing_own_details %}
+                    <p>You're not waiting for any faciliator replies.</p>
+                {% else %}
+                    <p>They're not waiting for any facilitator replies.</p>
+                {% endif %}
+            {% endif %}
+
+            {% if viewed_user_profile.is_facilitator and viewing_own_details %}
+                {% if viewed_user_profile.has_pending_requests_as_facilitator %}
+                    <p>
+                        The following children have requested you as a facilitator.
+                    </p>
+                    <ul>
+                        {% for request in viewed_user_profile.pending_requests_as_facilitator %}
+                            <li style="padding-bottom:0.5em">
+                                {{ request.child.username }}&nbsp;
+                                ({% realname_for request.child.id %})
+                                <button class="btn btn-success btn-xs facilitator-response" data-request-id="{{ request.id }}" data-child-name="{{ request.child.username }}" data-response="accept">
+                                    <i class="fa fa-check"></i>&nbsp;Accept
+                                </button>&nbsp;
+                                <button class="btn btn-danger btn-xs facilitator-response" data-request-id="{{ request.id }}" data-child-name="{{ request.child.username }}" data-response="decline">
+                                    <i class="fa fa-close"></i>&nbsp;Decline
+                                </button>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No children have requested you as their facilitator.</p>
+                {% endif %}
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% if viewed_user_profile.is_facilitator and viewing_own_details %}
+        <div class="panel panel-default">
+            <h2>Children</h2>
+            {% if viewed_user_profile.has_children %}
+                You are currently assisting the following children.
+                {% for child in viewed_user_profile.children.all %}
+                    <li>
+                        <a href="{% url 'pyxiebob:user' user_id=child.id %}">
+                            {{ child.user.username }}
+                            ({{ child.realname|default:'No name set.'}})
+                        </a>
+
+                        {% if child.has_pending_password_request %}
+                            <button class="facilitatorPasswordResetRequest btn btn-primary btn-sm" data-child-id="{{ child.id }}">
+                                <i class="fa fa-exclamation-triangle"></i>&nbsp;Reset password for child
+                            </button>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            {% else %}
+                <p>You currently are not assisting any children.</p>
+            {% endif %}
+        </div>
+    {% endif %}
+
+
+    {% if viewing_own_details %}
+        <div class="panel panel-default" >
+<div style="max-width: 800px">
+            <h2>Your Details</h2>
+            <P> These details can be used for unlocking your account if
+            necessary, and help us to understand how everyone
+            has used the site.
+            <P><label for="name" class="col-md-3">Your Name :</label>
+            <input type="text" id="name" name="name" value="{{ viewed_user_profile.realname|default:"" }}" class="col-md-8">
+
+            {% if viewed_user_profile.is_facilitator %}
+                <P><label for="email" class="col-md-3">Email:</label>
+                <input type="text" id="email" name="email" value="{{ viewed_user_profile.email|default:"" }}" class="col-md-8">
+            {% endif %}
+
+            <P><label for="question_1"class="col-md-3">Who is cool?:</label>
+            <input type="text" id="question_1" name="question_1" value="{{ viewed_user_profile.question_1|default:""  }}" class="col-md-8">
+
+            <P><label for="question_2"class="col-md-3">Favourite colour?:</label>
+            <input type="text" id="question_2" name="question_2" value="{{ viewed_user_profile.question_2|default:""  }}" class="col-md-8">
+
+            <P><label for="question_3"class="col-md-3">How old are you?:</label>
+            <input type="text" id="question_3" name="question_3" value="{{ viewed_user_profile.question_3|default:""  }}" class="col-md-8">
+
+            <P><label for="question_4"class="col-md-3">Boy or Girl?:</label>
+            <input type="text" id="question_4" name="question_4" value="{{ viewed_user_profile.question_4|default:""  }}" class="col-md-8">
+
+            <P><label for="question_5"class="col-md-3">What show do you watch (or book you read...) ?:</label>
+            <input type="text" id="question_5" name="question_5" value="{{ viewed_user_profile.question_5|default:""  }}" class="col-md-8">
+            <P><button role="button" id="update-user-details" class="btn btn-primary">
+                <i class="fa fa-thumbs-up">Update My Details</i>
+            </button>
+
+</div>
+
+        </div>
+    {% endif %}
+
+
+
+    <!-- Body: user.html -->
+{% endblock %}

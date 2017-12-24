@@ -1,0 +1,87 @@
+Things needing doing for setup:
+
+* Create the Primary Store directory unless it exists
+* Create the Pending Queue directory unless it exists
+* Creat  rre the Compilied Programs directory unless it exists
+* Create the 'highest.txt' file in the Primary Store unless it exists, load it with '0'.
+* Set the superuser for the Django admin page.  For production this would either be secured, or disabled.
+
+Required Python modules:
+* django
+* django-jinja
+* markdown
+* filelock
+
+Run the following Python commands:
+* If there was a previous version- /usr/bin/python2.7 manage.py flush
+* /usr/bin/python2.7 manage.py makemigrations
+* /usr/bin/python2.7 manage.py migrate
+* /usr/bin/python2.7 manage.py createsuperuser
+
+TODO:
+* Check error handling
+* Check CSRF for Ajax requests
+* Load code button for tutorials
+
+---
+TUTORIAL NOTES
+The example on Pg2. is not JavaScript, it's HTML with one line of JavaScript (the document.getElementById one).
+The header for Task 2 and Task 3 is the same ("Turning the LED off again").
+
+
+--
+
+IMPORTANT FILES
+
+./app/settings.py - Contains all of the Django config, including logging and debug.
+./app/urls.py - Top-level routing, if you need to change /pyxiebob or /admin go here.
+./compile_sass.sh - Utility script, one-shot compilation of .scss template files from sass_src into .css
+./db.sqlite3 - The database
+./manage.py - Django utility script, the bug/management commands hook into this.
+./pyxiebob/admin.py - Configure the /admin interface, including which models and fields are there
+./pyxiebob/management/commands/create_users.py - The implementation of the 'create_users' command
+./pyxiebob/management/commands/import_tutorials.py - The implementation of the 'import_tutorials' command
+./pyxiebob/management/commands/setup_system.py - The implementation of the 'setup_system' command, which currently just creates the 'facilitators' group for permissions
+./pyxiebob/migrations/0001_initial.py - The autogenned migrations file.  Since the rebuild_store.sh script nukes this there should only ever be a 0001* one here.
+./pyxiebob/models.py - Implementation of all of the PyxieBob database models- this is what drives the migrations and sets up the actual classes
+./pyxiebob/settings.py - PyxieBob-specific settings
+./pyxiebob/static - Statically-served content.  In debug this is dynamically served, in production this should be served via Apache/Nginx/whatnot.
+
+// In the following pyxiebob symlinked into pyxiebob
+// This will improve over time
+
+./pyxiebob/static/pyxiebob/css - Site CSS lives here, this is mostly generated using the Sass .sh scripts
+./pyxiebob/static/pyxiebob/css/test.css - This is the one exception, hardcoded CSS rules live here.
+./pyxiebob/static/pyxiebob/tutorial_assets - The contents of this directory are controlled by the 'import_tutorials' script, and all tutorial assets should live here.
+./pyxiebob/templates/pyxiebob/_master.html - Top-level template, controls the overall page layout
+./pyxiebob/templates/pyxiebob/_tutorial.html - Specialised template for tutorials
+./pyxiebob/templates/pyxiebob/partials/blockly_toolboxes - Blockly toolboxes for tutorials live here
+./pyxiebob/urls.py - PyxieBob routing, all of the /user, /program and so forth is configured here.
+./pyxiebob/views.py - The view/controller layer for PyxieBob, all of the actual request handling is here.
+./NOTES.txt - This file.  Very important.
+./rebuild_store.sh - Django 1.7-based script which completely nukes the database, tutorials, and everything else and rebuilds it.
+./sass_src - All of the .scss Sass source files live here, these are converted to CSS via the Sass .sh scripts
+./tutorial_source - This contains the raw .MD files, and assets for tutorials.  The 'import_tutorials' command puts these into the database and /static.
+./watch_sass.sh - Continually watches the sass_src directory, converting them to .css when a change is detected.
+
+
+LICENSE:
+-------
+#
+# Copyright 2016 British Broadcasting Corporation and Contributors(1)
+#
+# (1) Contributors are listed in the AUTHORS file (please extend AUTHORS,
+#     not this header)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#

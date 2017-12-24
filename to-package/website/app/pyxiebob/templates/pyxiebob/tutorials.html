@@ -1,0 +1,18 @@
+{% extends 'pyxiebob/_master.html' %}
+
+{% block head %}
+    <title>Pyxie Bob: Tutorials</title>
+{% endblock %}
+
+{% block body %}
+    <h1>Tutorials</h1>
+    <ul>
+        {% for tutorial in tutorials %}
+            <li>
+                <a href="{% url 'pyxiebob:tutorial' tutorial_name=tutorial.name %}">
+                    {{ tutorial.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{%  endblock %}
